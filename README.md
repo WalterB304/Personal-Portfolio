@@ -1,4 +1,3 @@
-# Personal-Portfolio
 # Dashboard Comercial — Power BI + SQL Server
 
 Dashboard de análisis comercial construido en SQL Server y exportado a Power BI, orientado a la toma de decisiones comerciales
@@ -45,7 +44,7 @@ Personal-Portfolio/
 
 ## Exploración en SQL Server
 
-La exploración inicial se realizó directamente en SSMS antes de conectar Power BI, validando los datos, respondiendo preguntas de negocio con queries y luego exponiendo los resultados al dashboard.
+La exploración inicial se realizó directamente en **SQL Server Management Studio (SSMS)**, validando los datos, respondiendo preguntas de negocio con queries y luego exponiendo los resultados en el dashboard de Power BI.
 
 ### Consultas principales
 
@@ -130,63 +129,66 @@ ORDER BY SUM(Total_Sales) DESC
 
 El dashboard está estructurado en dos páginas con las métricas principales para realizar un análisis de las ventas globales de la empresa
 
-### Página 1 — Resumen Comercial Global
+[Ver Dashboard en Power BI](https://app.powerbi.com/view?r=eyJrIjoiZGRkNTcxODUtNTAyOC00N2I0LWI4YzUtYjY3MzM0Njc1ZWUyIiwidCI6ImZjZDlhYmQ4LWRmY2QtNGExYS1iNzE5LThhMTNhY2ZkNWVkOSIsImMiOjR9&pageName=351cb590cbbdbb5c4256)
 
-Orientada a responder: *¿cómo está el negocio en términos de ventas, rentabilidad y distribución geográfica?*
+### Página 1 — Resumen Comercial Global
+[Ver Página 1](Dashboard_1.png)
+
+*¿cómo está el negocio en términos de ventas y rentabilidad? ¿Cuáles son nuestros mejores productos y sectores geográficos?*
 
 - **Mapa de burbujas:** distribución de ventas por región
-- **Gráfico de líneas:** tendencia de ventas mensual por región (2023–2025)
-- **Gráfico de barras:** Top productos por ventas y utilidad
-- **Gráfico de dona:** participación por método de pago
+- **Gráfico de líneas:** ventas mensual por región
+- **Gráfico de barras:** Top 10 productos por ventas y utilidad
+- **Tarjetas:** Ventas totales, utilidad, márgen de utilidad y ticket promedio
 - **Filtros:** rango de fechas y categoría de producto
 
-### Página 2 — Análisis por Mercado
+### Página 2 — Ventas por país
+[Ver Página 2](Dashboard_2.png)
 
-Orientada a responder: *¿qué países son más rentables y cómo evolucionan respecto a períodos anteriores?*
+*¿qué países son más rentables y cómo evolucionan respecto a períodos anteriores?*
 
-- **Tabla comparativa por país:** ventas actuales vs mes anterior y año anterior con variación porcentual
-- **Scatter plot:** relación entre ventas y utilidad por país, con línea de tendencia
+- **Tabla comparativa por país:** ventas actuales vs mes y año anterior con variación porcentual
+- **Scatter plot:** relación entre ventas y utilidad por país
 - **Medidores de margen:** margen de contribución por categoría de producto
 - **Filtros:** región, año y mes
 
 ### Medidas DAX destacadas
 
 ```dax
--- Ventas mes anterior
-Ventas Mes Anterior = 
-CALCULATE(
-    SUM(Global_Sales[Total_Sales]),
-    DATEADD(Calendario[Date], -1, MONTH)
-)
-
--- Crecimiento porcentual respecto al mes anterior
-Crecimiento % vs Mes Anterior = 
-DIVIDE(
-    SUM(Global_Sales[Total_Sales]) - [Ventas Mes Anterior],
-    [Ventas Mes Anterior],
-    0
-)
-
--- Margen de contribución por categoría
-Margen Clothing = 
-DIVIDE(
-    CALCULATE(SUM(Global_Sales[Profit]), Global_Sales[Product_Category] = "Clothing & Accessories"),
-    CALCULATE(SUM(Global_Sales[Total_Sales]), Global_Sales[Product_Category] = "Clothing & Accessories")
-)
+-- Margen de contribución global
+Margen = DIVIDE(SUM('Global_Sales'[Profit]), SUM('Global_Sales'[Total_Sales]))
+ 
+-- Ticket promedio por transacción
+Ticket Promedio = SUM('Global_Sales'[Total_Sales]) / COUNT('Global_Sales'[Order_ID])
+ 
+-- Ventas período anterior (mes y año)
+Ventas -1M = CALCULATE(SUM('Global_Sales'[Total_Sales]), DATEADD(Calendario[Fecha], -1, MONTH))
+Ventas -1Y = CALCULATE(SUM('Global_Sales'[Total_Sales]), SAMEPERIODLASTYEAR(Calendario[Fecha]))
+ 
+-- Variación absoluta respecto a períodos anteriores
+Variacion Ventas Mes = SUM('Global_Sales'[Total_Sales]) - [Ventas -1M]
+Variacion Ventas Año = SUM('Global_Sales'[Total_Sales]) - [Ventas -1Y]
+ 
+-- Variación porcentual respecto a períodos anteriores
+% Ventas -1M = DIVIDE([Variacion Ventas Mes], [Ventas -1M], 0)
+% Ventas -1Y = DIVIDE([Variacion Ventas Año], [Ventas -1Y], 0)
 ```
 
 ---
 
 ## Conclusiones del análisis
-- **North America y Europe** concentran el mayor volumen de ventas, pero mercados de Asia Pacific muestran márgenes comparables con menor volumen.
-- **Standing Desk Converter y Ergonomic Office Chair** lideran en ventas y utilidad dentro de la categoría Furniture.
-- **Clothing & Accessories** presenta el margen de contribución más alto (0.44), mientras que Office Supplies muestra el menor (0.16).
-- La distribución por método de pago es relativamente equilibrada, con leve predominancia de Credit Card (39.2%).
+- **Norte America, Asia y Europa** concentran el mayor volumen de ventas, en comparación con Sudamérica y África con una menor participación.
+- **Standing Desk Converter y Ergonomic Office Chair** lideran tanto en ventas como utilidad entre todos los productos.
+- **Clothing & Accessories** presenta el margen de contribución más alto (44%), mientras que Office Supplies muestra el menor (16%).
+- **Furniture** es la categoría con mayores ventas, superando por el doble a Technology, pero es menos redituable en términos porcentuales dado que cuenta con un margen de 33.6% comparado a un 36.43% 
+  
+debido a la falta de coherencia en los datos no se pueden entregar conclusiones contundentes en variaciones de ventas debido a la alta dispersión de los datos, esto se debe a que se trata de un dataset ficticio, entendiendose que en condiciones con datos reales sería más significativo ver la evolución en las ventas de los países
 
 ---
 
 ## Créditos
-Datos obtenidos de Kaggle "Global E-Commerce Sales & Customer Data" por Muhammad Aammar Tufail..
+
+Datos obtenidos de Kaggle,  "Global E-Commerce Sales & Customer Data" por Muhammad Aammar Tufail.
 
 ---
 
