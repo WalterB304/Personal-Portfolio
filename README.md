@@ -33,15 +33,6 @@ Personal-Portfolio/
 
 ---
 
-## Herramientas utilizadas
-
-| Herramienta | Uso |
-|---|---|
-| SQL Server (SSMS) | Exploración inicial de datos |
-| Power BI Desktop | Modelado, DAX y visualización |
-
----
-
 ## Exploración en SQL Server
 
 La exploración inicial se realizó directamente en **SQL Server Management Studio (SSMS)**, validando los datos, respondiendo preguntas de negocio con queries y luego exponiendo los resultados en el dashboard de Power BI.
