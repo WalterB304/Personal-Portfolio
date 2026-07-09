@@ -123,7 +123,7 @@ El dashboard está estructurado en dos páginas con las métricas principales pa
 [Ver Dashboard en Power BI](https://app.powerbi.com/view?r=eyJrIjoiZGRkNTcxODUtNTAyOC00N2I0LWI4YzUtYjY3MzM0Njc1ZWUyIiwidCI6ImZjZDlhYmQ4LWRmY2QtNGExYS1iNzE5LThhMTNhY2ZkNWVkOSIsImMiOjR9&pageName=351cb590cbbdbb5c4256)
 
 ### Página 1 — Resumen Comercial Global
-[Ver Página 1](Análisis_Comercial/Imágenes y Texto/Dashboard_1.png)
+[Ver Página 1](Dashboard_Comercial/Images/Dashboard_1.png)
 
 *¿cómo está el negocio en términos de ventas y rentabilidad? ¿Cuáles son nuestros mejores productos y sectores geográficos?*
 
@@ -134,7 +134,7 @@ El dashboard está estructurado en dos páginas con las métricas principales pa
 - **Filtros:** rango de fechas y categoría de producto
 
 ### Página 2 — Ventas por país
-[Ver Página 2](Análisis_Comercial/Imágenes y Texto/Dashboard_2.png)
+[Ver Página 2](Dashboard_Comercial/Images/Dashboard_2.png)
 
 *¿qué países son más rentables y cómo evolucionan respecto a períodos anteriores?*
 
